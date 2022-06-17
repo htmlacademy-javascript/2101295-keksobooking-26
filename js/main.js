@@ -29,7 +29,7 @@ const FEATURESARR = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'con
 
 //нужен массив для генерации discription
 const DISCRIPTIONARR = [' База отдыха имеет три отдельно стоящих корпуса. Номерной фонд состоит из 14 номеров: три 2х-местных, один 3-х местный, десять 4х-местных.',
-'Гостиница отлично подходит для туристов, командированных, путешественников. К услугам гостей и жителям Барнаула - 14 уютных номеров.', 'Гостиница подойдет для краткосрочного пребывания туристов и командированных.', 'Гостиница расположена в жилом районе, в 4 км от центральной площади Советов. ']
+  'Гостиница отлично подходит для туристов, командированных, путешественников. К услугам гостей и жителям Барнаула - 14 уютных номеров.', 'Гостиница подойдет для краткосрочного пребывания туристов и командированных.', 'Гостиница расположена в жилом районе, в 4 км от центральной площади Советов. '];
 
 //нужен массив для генерации photos
 const PHOTOARR = ['https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg', 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'];
@@ -48,16 +48,17 @@ function getArrayFeatures(featuresArr) {
     }
   }
   return arrayFe;
-};
+}
 
 //создаем массив случайной длины из значений photoArr
 const getArrayPhoto = (photoArr) => {
-  let getRandomLength = getRandomPositiveInteger(1, photoArr.length);
-  let resultArrPhoto = [];
+  const getRandomLength = getRandomPositiveInteger(1, photoArr.length);
+  const resultArrPhoto = [];
   for (let i = 0; i < getRandomLength; i++) {
-      let getIndEl = getRandomPositiveInteger(0, photoArr.length - 1);
-      resultArrPhoto.push(photoArr[getIndEl]);
-  };
+    const getIndEl = getRandomPositiveInteger(0, photoArr.length - 1);
+    resultArrPhoto.push(photoArr[getIndEl]);
+  }
+  return resultArrPhoto;
 };
 
 
@@ -65,36 +66,34 @@ const getArrayPhoto = (photoArr) => {
 const CREATEADVERTISEMENTSARR = 10;
 
 //создаем функциб для создания объекта
-const createAdvertisements = () => {
-  return {
+const createAdvertisements = () => ({
 
-      AUTHOR: {
-      avatar: 'img/avatars/user' + getRandomPositiveInteger(1, 10) + '.png'
-    },
+  AUTHOR: {
+    avatar: `img/avatars/user${  getRandomPositiveInteger(1, 10)  }.png`
+  },
 
 
-      OFFER: {
-      title: TITLEARR[getRandomPositiveInteger(0, TITLEARR.length - 1)],
-      address: getRandomPositiveFloat(0, 10, 4) + ' , ' + getRandomPositiveFloat(0, 10, 4),
-      price:  getRandomPositiveInteger(1000, 10000),
-      type: TYPSARR[getRandomPositiveInteger(0, TYPSARR.length - 1)],
-      rooms: getRandomPositiveInteger(1, 5),
-      guests: getRandomPositiveInteger(1, 12),
-      checkin: CHECKINSARR[getRandomPositiveInteger(0, CHECKINSARR.length - 1)],
-      checkout: CHECKOUTSARR[getRandomPositiveInteger(0, CHECKOUTSARR.length - 1)],
-      features: getArrayFeatures(FEATURESARR),
-      description: DISCRIPTIONARR[getRandomPositiveInteger(0, DISCRIPTIONARR.length - 1)],
-      photos: getArrayFeatures(PHOTOARR)
-    },
+  OFFER: {
+    title: TITLEARR[getRandomPositiveInteger(0, TITLEARR.length - 1)],
+    address: `${getRandomPositiveFloat(0, 10, 4)  } , ${  getRandomPositiveFloat(0, 10, 4)}`,
+    price:  getRandomPositiveInteger(1000, 10000),
+    type: TYPSARR[getRandomPositiveInteger(0, TYPSARR.length - 1)],
+    rooms: getRandomPositiveInteger(1, 5),
+    guests: getRandomPositiveInteger(1, 12),
+    checkin: CHECKINSARR[getRandomPositiveInteger(0, CHECKINSARR.length - 1)],
+    checkout: CHECKOUTSARR[getRandomPositiveInteger(0, CHECKOUTSARR.length - 1)],
+    features: getArrayFeatures(FEATURESARR),
+    description: DISCRIPTIONARR[getRandomPositiveInteger(0, DISCRIPTIONARR.length - 1)],
+    photos: getArrayPhoto(PHOTOARR)
+  },
 
-      LOCATION: {
-      lat: getRandomPositiveFloat(35.65, 35.7, 5),
-      lng: getRandomPositiveFloat(139.7, 139.8, 5)
+  LOCATION: {
+    lat: getRandomPositiveFloat(35.65, 35.7, 5),
+    lng: getRandomPositiveFloat(139.7, 139.8, 5)
 
-    }
-};
-};
+  }
+});
 
-const similarWizards = Array.from({length: CREATEADVERTISEMENTSARR}, createAdvertisements);
+export const similarWizards = Array.from({length: CREATEADVERTISEMENTSARR}, createAdvertisements);
 
 
