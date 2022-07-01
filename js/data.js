@@ -1,5 +1,13 @@
 import {getRandomPositiveInteger, getRandomPositiveFloat} from './util.js';
 
+function getAvatars () {
+  const number = getRandomPositiveInteger(1, 10);
+  let sss = '';
+  if (number <= 9) {sss = `img/avatars/user0${  number  }.png`;}
+  else {sss = `img/avatars/user${  number  }.png`;}
+  return sss;
+}
+
 
 //нужен массив для генерации заголовка title
 const titles = ['отель Медвежий угол', 'отель Altay', 'гостиница пять звезд', 'Отель Марьин Остров'];
@@ -58,7 +66,7 @@ const NUMBER_OF_ADS = 10;
 const createAdvertisements = () => ({
 
   author: {
-    avatar: `img/avatars/user${  getRandomPositiveInteger(1, 10)  }.png`
+    avatar: getAvatars(1, 10)
   },
 
 
