@@ -4,8 +4,7 @@ const MAPFILTERS = document.querySelector('.map__filters');
 const MAPFILTERSSELECT = ADFORM.querySelectorAll('select');
 
 
-
-let giveAnInactiveState = () => {
+const giveAnInactiveState = () => {
   ADFORM.classList.add('ad-form--disabled');
   MAPFILTERS.classList.add('ad-form--disabled');
   FIELDSET.disabled = true;
@@ -14,7 +13,7 @@ let giveAnInactiveState = () => {
 
 giveAnInactiveState();
 
-let giveInactiveState = () => {
+const giveInactiveState = () => {
   ADFORM.classList.remove('ad-form--disabled');
   MAPFILTERS.classList.remove('ad-form--disabled');
   FIELDSET.disabled = false;
