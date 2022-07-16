@@ -4,7 +4,7 @@ const adCardTemplate = document.querySelector('#card').content.querySelector('.p
 
 
 // объект для сопоставления типов жилья
-const typeOfHouse = {
+export const typeOfHouse = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
