@@ -23,11 +23,11 @@ pristine.addValidator(
 );
 
 const minPrice = {
-  'Бунгало': 0,
-  'Квартира': 1000,
-  'Отель': 3000,
-  'Дом': 5000,
-  'Дворец': 10000
+  [typeOfHouse.bungalow]: 0,
+  [typeOfHouse.flat]: 1000,
+  [typeOfHouse.hotel]: 3000,
+  [typeOfHouse.house]: 5000,
+  [typeOfHouse.palace]: 10000
 };
 
 function validatePrice(value) {
@@ -37,8 +37,7 @@ function validatePrice(value) {
 
 function getErrorMessagePrice () {
   const type = typeOfHouse[formAd.querySelector('#type').value];
-  return `${typeOfHouse[formAd.querySelector('#type').value]}
-          стоит дороже ${minPrice[type]}`;
+  return `${type} стоит дороже ${minPrice[type]}`;
 }
 
 pristine.addValidator(
@@ -57,14 +56,16 @@ const numberGuests = {
   '100 комнат': ['не для гостей']
 };
 
+
 function validateNumberGuests() {
   return numberGuests[numberRooms.options[numberRooms.selectedIndex].text].includes(numberSeats.options[numberSeats.selectedIndex].text);
 }
 
 function getErrorMessageNumberRooms () {
+  const numberRoomsNow = numberRooms.options[numberRooms.selectedIndex].text;
   return `
-         ${numberRooms.options[numberRooms.selectedIndex].text}
-         ${numberRooms.options[numberRooms.selectedIndex].text === '1 комната' ? 'не подходит' : 'не подходят'}
+         ${numberRoomsNow}
+         ${numberRoomsNow === '1 комната' ? 'не подходит' : 'не подходят'}
          ${numberSeats.options[numberSeats.selectedIndex].text.toLowerCase()}
   `;
 }
