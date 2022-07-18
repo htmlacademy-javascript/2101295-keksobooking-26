@@ -30,11 +30,23 @@ const minPrice = {
   palace: 10000
 };
 
+function validatPrice(value) {
+  console.log({value:parseInt(value), min:priceRoom.min, max:priceRoom.max})
+  return  parseInt(value) >= parseInt(priceRoom.min)
+}
+
 function onUnitChange () {
   priceRoom.min = minPrice[typeRoom.value];
   priceRoom.placeholder = minPrice[typeRoom.value];
+
+
 }
 
+function getErrorMessagePrice () {
+  return `значение должно быть больше ${priceRoom.min} `
+}
+
+pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
 typeRoom.addEventListener('change', onUnitChange);
 
 const numberRooms = formAd.querySelector('[name="rooms"]');
@@ -64,22 +76,26 @@ function getErrorMessageNumberRooms () {
 pristine.addValidator(numberRooms, validateNumberGuests, getErrorMessageNumberRooms);
 pristine.addValidator(numberSeats, validateNumberGuests, getErrorMessageNumberRooms);
 
-const timein = formAd.querySelector('#timein');
-const timeout = formAd.querySelector('#timeout');
+const timeIn = formAd.querySelector('#timein');
+const timeOut = formAd.querySelector('#timeout');
 
-timein.addEventListener('change', (evt) => {
+timeIn.addEventListener('change', (evt) => {
   const nowSelected = evt.target.selectedIndex;
-  timeout.selectedIndex = nowSelected;
+  timeOut.selectedIndex = nowSelected;
 });
 
-timeout.addEventListener('change', (evt) => {
+timeOut.addEventListener('change', (evt) => {
   const nowSelected = evt.target.selectedIndex;
-  timein.selectedIndex = nowSelected;
+  timeIn.selectedIndex = nowSelected;
 });
 
 formAd.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    evt.target.submit();
+  };
+
 });
 
 
