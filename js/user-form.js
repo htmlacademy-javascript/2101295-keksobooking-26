@@ -83,5 +83,3 @@ formAd.addEventListener('submit', (evt) => {
 });
 
 
-
-
