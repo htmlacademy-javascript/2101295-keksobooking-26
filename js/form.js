@@ -11,7 +11,7 @@ const setDisabledState = () => {
   MAPFILTERSSELECT.disabled = true;
 };
 
-setDisabledState();
+//setDisabledState();
 
 export const setActiveState = () => {
   ADFORM.classList.remove('ad-form--disabled');

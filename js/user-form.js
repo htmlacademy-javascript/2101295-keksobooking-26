@@ -1,6 +1,3 @@
-import {typeOfHouse} from './popup.js';
-
-
 const formAd = document.querySelector('.ad-form');
 
 const pristine = new Pristine(formAd, {
@@ -10,7 +7,7 @@ const pristine = new Pristine(formAd, {
   errorTextParent: 'ad-form__element',
   errorTextTag: 'span',
   errorTextClass: 'form__error'
-},);
+}, );
 
 function validateHead(value) {
   return value.length >= 30 && value.length <= 100;
@@ -22,29 +19,35 @@ pristine.addValidator(
   'От 30 до 100 символов'
 );
 
+const priceRoom = formAd.querySelector('#price');
+const typeRoom = formAd.querySelector('#type');
+
 const minPrice = {
-  [typeOfHouse.bungalow]: 0,
-  [typeOfHouse.flat]: 1000,
-  [typeOfHouse.hotel]: 3000,
-  [typeOfHouse.house]: 5000,
-  [typeOfHouse.palace]: 10000
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
 };
 
-function validatePrice(value) {
-  const type = typeOfHouse[formAd.querySelector('#type').value];
-  return value.length && value >= minPrice[type];
+function validatPrice(value) {
+  console.log({value:parseInt(value), min:priceRoom.min, max:priceRoom.max})
+  return  parseInt(value) >= parseInt(priceRoom.min)
+}
+
+function onUnitChange () {
+  priceRoom.min = minPrice[typeRoom.value];
+  priceRoom.placeholder = minPrice[typeRoom.value];
+
+
 }
 
 function getErrorMessagePrice () {
-  const type = typeOfHouse[formAd.querySelector('#type').value];
-  return `${type} стоит дороже ${minPrice[type]}`;
+  return `значение должно быть больше ${priceRoom.min} `
 }
 
-pristine.addValidator(
-  formAd.querySelector('#price'),
-  validatePrice,
-  getErrorMessagePrice
-);
+pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
+typeRoom.addEventListener('change', onUnitChange);
 
 const numberRooms = formAd.querySelector('[name="rooms"]');
 const numberSeats = formAd.querySelector('[name="capacity"]');
@@ -73,9 +76,26 @@ function getErrorMessageNumberRooms () {
 pristine.addValidator(numberRooms, validateNumberGuests, getErrorMessageNumberRooms);
 pristine.addValidator(numberSeats, validateNumberGuests, getErrorMessageNumberRooms);
 
+const timeIn = formAd.querySelector('#timein');
+const timeOut = formAd.querySelector('#timeout');
+
+timeIn.addEventListener('change', (evt) => {
+  const nowSelected = evt.target.selectedIndex;
+  timeOut.selectedIndex = nowSelected;
+});
+
+timeOut.addEventListener('change', (evt) => {
+  const nowSelected = evt.target.selectedIndex;
+  timeIn.selectedIndex = nowSelected;
+});
+
 formAd.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (isValid) {
+    evt.target.submit();
+  };
+
 });
 
 
