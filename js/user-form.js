@@ -31,19 +31,44 @@ const minPrice = {
 };
 
 function validatPrice(value) {
-  console.log({value:parseInt(value), min:priceRoom.min, max:priceRoom.max})
-  return  parseInt(value) >= parseInt(priceRoom.min)
+  return parseInt(value, 10) >= parseInt(priceRoom.min, 10);
 }
+
+const sliderElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: priceRoom.placeholder,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+    if (Number.isInteger(value)) {
+      return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  priceRoom.value = sliderElement.noUiSlider.get();
+});
 
 function onUnitChange () {
   priceRoom.min = minPrice[typeRoom.value];
   priceRoom.placeholder = minPrice[typeRoom.value];
-
-
+  sliderElement.noUiSlider.set(minPrice[typeRoom.value]);
 }
 
 function getErrorMessagePrice () {
-  return `значение должно быть больше ${priceRoom.min} `
+  return `значение должно быть больше ${priceRoom.min} `;
 }
 
 pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
@@ -94,7 +119,7 @@ formAd.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (isValid) {
     evt.target.submit();
-  };
+  }
 
 });
 

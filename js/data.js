@@ -63,7 +63,7 @@ const getArrayPhoto = () => {
 const NUMBER_OF_ADS = 10;
 
 //создаем функциб для создания объекта
-const createAdvertisements = () => ({
+export const createAdvertisements = () => ({
 
   author: {
     avatar: getAvatars(1, 10)
@@ -90,8 +90,5 @@ const createAdvertisements = () => ({
 
   }
 });
-
-const similarWizards = () => Array.from({length: NUMBER_OF_ADS}, createAdvertisements);
-
-export {similarWizards};
-
+const createSimilarAds = () => Array.from({length: NUMBER_OF_ADS}, createAdvertisements);
+export {createSimilarAds};
