@@ -46,8 +46,8 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
   format: {
     to: function (value) {
-    if (Number.isInteger(value)) {
-      return value.toFixed(0);
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
       }
       return value.toFixed(1);
     },
