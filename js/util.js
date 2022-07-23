@@ -12,6 +12,30 @@ function getRandomPositiveFloat (a, b, digits = 1) {
   return +result.toFixed(digits);
 }
 
-export {getRandomPositiveInteger, getRandomPositiveFloat};
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+
+const showAlert = () => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '1000';
+  alertContainer.style.width = '500px';
+  alertContainer.style.height = '100px';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '500px';
+  alertContainer.style.top = '280px';
+  alertContainer.style.right = '0';
+  alertContainer.style.padding = '10px 3px';
+  alertContainer.style.fontSize = '30px';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'red';
+
+  alertContainer.textContent = 'Не загрузились объявления. Перезагрузите страницу.';
+
+  document.body.append(alertContainer);
+
+};
+
+export {getRandomPositiveInteger, getRandomPositiveFloat, showAlert, isEscapeKey};
 
 

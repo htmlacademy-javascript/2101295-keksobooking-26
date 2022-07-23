@@ -1,6 +1,5 @@
 const adCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-
 // объект для сопоставления типов жилья
 export const typeOfHouse = {
   flat: 'Квартира',
@@ -37,23 +36,28 @@ export const listCard = (point) => {
 
   const popupFeature = similarCard.querySelector('.popup__features');
   const popupFeatures = popupFeature.querySelectorAll('.popup__feature');
-  popupFeatures.forEach((popupFeaturesItem) => {
-    const isNecessary = point.offer.features.some((i) => popupFeaturesItem.classList.contains(`popup__feature--${  i}`),
-    );
-    if(!isNecessary) {popupFeaturesItem.remove();}
-  });
-  if (point.offer.features === '') {similarCard.querySelector('.popup__features').style.display = 'none';}
+
+  if (point.offer.features) {
+    popupFeatures.forEach((popupFeaturesItem) => {
+      const isNecessary = point.offer.features.some((i) => {popupFeaturesItem.classList.contains(`popup__feature--${  i}`);});
+
+      if(!isNecessary) {popupFeaturesItem.remove();}
+    });
+  }
+  //if (point.offer.features === '') {similarCard.querySelector('.popup__features').style.display = 'none';}
 
   similarCard.querySelector('.popup__description').textContent = point.offer.description;
   if (point.offer.description === '') {similarCard.querySelector('.popup__description').style.display = 'none';}
 
-  point.offer.photos.forEach((photo) => {
-    const clonePhoto = similarCard.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
-    clonePhoto.src = photo;
-    similarCard.querySelector('.popup__photos').append(clonePhoto);
-  });
-  similarCard.querySelector('.popup__photos').querySelectorAll('.popup__photo')[0].remove();
-  if (point.offer.photos === '') {similarCard.querySelector('.popup__photos').style.display = 'none';}
+  if (point.offer.photos) {
+    point.offer.photos.forEach((photo) => {
+      const clonePhoto = similarCard.querySelector('.popup__photos').querySelector('.popup__photo').cloneNode(true);
+      clonePhoto.src = photo;
+      similarCard.querySelector('.popup__photos').append(clonePhoto);
+    });
+    similarCard.querySelector('.popup__photos').querySelectorAll('.popup__photo')[0].remove();
+  }
+  //if (point.offer.photos === '') {similarCard.querySelector('.popup__photos').style.display = 'none';}
   return similarCard;
 };
 
