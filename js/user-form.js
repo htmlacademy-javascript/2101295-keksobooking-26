@@ -167,7 +167,6 @@ const openOrClose = (massage) => {
   openMessage();
 };
 
-
 const alertSuccsessMessage = () => {
   const templateSuccsess = document.querySelector('#success');
   const successMessage = templateSuccsess.content.querySelector('.success').cloneNode(true);
