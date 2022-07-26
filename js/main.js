@@ -1,5 +1,5 @@
 import './util.js';
-//import './filter.js';
+import './avatar.js';
 import './popup.js';
 import './form.js';
 import './user-form.js';
@@ -83,7 +83,7 @@ const updateMarkers = () => {
   markerGroup.clearLayers();
   createMarker(offers.filter(filterOffers).slice(0, 10));
   filters.addEventListener('change',
-    updateMarkers
+    updateMarkers, 500
   );
 };
 
