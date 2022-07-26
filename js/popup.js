@@ -1,3 +1,4 @@
+import {preparedFeatures} from './data.js';
 const adCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 // объект для сопоставления типов жилья
@@ -35,13 +36,24 @@ export const listCard = (point) => {
   if (point.offer.checkout === '') {similarCard.querySelector('.popup__text--time').style.display = 'none';}
 
   const popupFeature = similarCard.querySelector('.popup__features');
-  const popupFeatures = popupFeature.querySelectorAll('.popup__feature');
+  //const popupFeatures = popupFeature.querySelectorAll('.popup__feature');
 
   if (point.offer.features) {
-    popupFeatures.forEach((popupFeaturesItem) => {
-      const isNecessary = point.offer.features.some((i) => {popupFeaturesItem.classList.contains(`popup__feature--${  i}`);});
 
-      if(!isNecessary) {popupFeaturesItem.remove();}
+    preparedFeatures.forEach((feature) => {
+      if (!point.offer.features.includes(feature)) {
+        const el = popupFeature.querySelector(`popup_feature--${feature}`);
+        if (el) {
+          el.remove();
+        }
+      }
+    });
+  } else {
+    preparedFeatures.forEach((feature) => {
+      const el = popupFeature.querySelector(`popup_feature--${feature}`);
+      if (el) {
+        el.remove();
+      }
     });
   }
   //if (point.offer.features === '') {similarCard.querySelector('.popup__features').style.display = 'none';}

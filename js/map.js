@@ -1,5 +1,4 @@
 import {setActiveState} from './form.js';
-//import {createSimilarAds} from './data.js';
 import {listCard} from './popup.js';
 
 const map = L.map('map-canvas')
@@ -34,9 +33,10 @@ const mainPinMarker = L.marker(
   {
     draggable: true,
     icon: mainPinIcon,
-  },);
+  },
+).addTo(map);
 
-mainPinMarker.addTo(map);
+
 ADRESS.value = `${mainPinMarker._latlng.lat.toFixed(5)}, ${mainPinMarker._latlng.lng.toFixed(5)}`;
 
 
@@ -53,23 +53,18 @@ const icon = L.icon({
 
 
 //const points = createSimilarAds();
+const markerGroup = L.layerGroup().addTo(map);
 
-export const createMarker = (ad) => {
-  const marker = L.marker(
-    {
-      lat: ad.location.lat,
-      lng: ad.location.lng,
-    },
-    {
-      icon,
-    }
-
-  );
-  marker.addTo(map)
-    .bindPopup(listCard(ad));
+export const createMarker = (ads) => {
+  ads.forEach((ad) => {L.marker({
+    lat: ad.location.lat,
+    lng: ad.location.lng,
+  },
+  {
+    icon,
+  }).addTo(markerGroup)
+    .bindPopup(listCard(ad));});
 };
 
-//points.forEach((point) => {
-//createMarker(point);
-//});
-export {ADRESS, mainPinMarker,map};
+
+export {ADRESS ,map,mainPinMarker, markerGroup};

@@ -22,7 +22,7 @@ const checkins = ['12:00', '13:00', '14:00'];
 const checkouts = ['12:00', '13:00', '14:00'];
 
 //нужен массив для генерации features
-const preparedFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+export const preparedFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 //нужен массив для генерации discription
 const discriptions = [' База отдыха имеет три отдельно стоящих корпуса. Номерной фонд состоит из 14 номеров: три 2х-местных, один 3-х местный, десять 4х-местных.',
