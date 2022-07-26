@@ -63,7 +63,8 @@ export const createMarker = (ads) => {
   {
     icon,
   }).addTo(markerGroup)
-    .bindPopup(listCard(ad));});
+    .bindPopup(listCard(ad));
+  });
 };
 
 

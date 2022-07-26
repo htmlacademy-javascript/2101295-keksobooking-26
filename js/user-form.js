@@ -1,9 +1,14 @@
 import {ADRESS, mainPinMarker, map} from './map.js';
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
+import {updateMarkers} from './filter.js';
 
+const DEFAULT_AVATAR = 'img/muffin-grey.svg';
 
 const formAd = document.querySelector('.ad-form');
+const filterForm = document.querySelector('.map__filters');
+const photoPreview = document.querySelector('.ad-form__photo');
+const avatarPreview = document.querySelector('.ad-form-header__preview img');
 
 const pristine = new Pristine(formAd, {
   classTo: 'ad-form__element',
@@ -122,7 +127,8 @@ timeOut.addEventListener('change', (evt) => {
 const cleanInput = () => {
   formAd.reset();
   map.closePopup();
-  priceRoom.value = '1000';   //здесь проблема - reset не работает
+  filterForm.reset();
+  priceRoom.value = '1000';
   document.querySelectorAll('.features__checkbox').forEach((el) => {el.checked = false;});
   mainPinMarker.setLatLng({
     lat: 35.658581,
@@ -134,6 +140,9 @@ const cleanInput = () => {
   }, 12);
   ADRESS.value = `${mainPinMarker._latlng.lat.toFixed(5)}, ${mainPinMarker._latlng.lng.toFixed(5)}`;
   document.querySelector('#description').value = '';
+  updateMarkers();
+  photoPreview.innerHTML = '';
+  avatarPreview.src = DEFAULT_AVATAR;
 };
 
 const openOrClose = (massage) => {
@@ -183,26 +192,6 @@ function setUserFormSubmit() {
     const isValid = pristine.validate();
     if (isValid) {
       sendData(onSuccess, alertErrorMessage, new FormData(evt.target));
-      //изначально было так как написано вынизу, ВОПРОС: почему new FormData(evt.target) подходит, ведь sendData.body нет 'body:'
-      /*const formData = new FormData(evt.target);
-      fetch(
-        'https://26.javascript.pages.academy/keksobooking',
-        {
-          method: 'POST',
-          body: new FormData(evt.target),
-        }
-      )
-        .then((response) => {
-          if (response.ok) {
-            cleanInput();
-            alertSuccsessMessage();
-          } else {
-            alertErrorMessage();
-          }
-        })
-        .catch(() => {
-          alertErrorMessage();
-        });*/
     }
   });
 }
@@ -210,11 +199,8 @@ function setUserFormSubmit() {
 setUserFormSubmit();
 
 const resetKey = document.querySelector('.ad-form__reset');
-
 resetKey.addEventListener('click', (evt) => {
   evt.preventDefault();
-
-
   cleanInput();
 });
 

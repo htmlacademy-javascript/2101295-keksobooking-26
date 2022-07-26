@@ -69,7 +69,6 @@ export const createAdvertisements = () => ({
     avatar: getAvatars(1, 10)
   },
 
-
   offer: {
     title: titles[getRandomPositiveInteger(0, titles.length - 1)],
     address: `${getRandomPositiveFloat(0, 10, 4)  } , ${  getRandomPositiveFloat(0, 10, 4)}`,

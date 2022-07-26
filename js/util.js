@@ -33,7 +33,6 @@ const showAlert = () => {
   alertContainer.textContent = 'Не загрузились объявления. Перезагрузите страницу.';
 
   document.body.append(alertContainer);
-
 };
 
 function debounce (callback, timeoutDelay = 500) {
