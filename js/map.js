@@ -52,7 +52,6 @@ const icon = L.icon({
 });
 
 
-//const points = createSimilarAds();
 const markerGroup = L.layerGroup().addTo(map);
 
 export const createMarker = (ads) => {
@@ -63,7 +62,8 @@ export const createMarker = (ads) => {
   {
     icon,
   }).addTo(markerGroup)
-    .bindPopup(listCard(ad));});
+    .bindPopup(listCard(ad));
+  });
 };
 
 
