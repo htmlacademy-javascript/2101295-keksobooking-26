@@ -9,6 +9,12 @@ const formAd = document.querySelector('.ad-form');
 const filterForm = document.querySelector('.map__filters');
 const photoPreview = document.querySelector('.ad-form__photo');
 const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const sliderElement = document.querySelector('.ad-form__slider');
+const numberRooms = formAd.querySelector('[name="rooms"]');
+const numberSeats = formAd.querySelector('[name="capacity"]');
+const timeIn = formAd.querySelector('#timein');
+const timeOut = formAd.querySelector('#timeout');
+
 
 const pristine = new Pristine(formAd, {
   classTo: 'ad-form__element',
@@ -44,8 +50,6 @@ function validatPrice(value) {
   return parseInt(value, 10) >= parseInt(priceRoom.min, 10);
 }
 
-const sliderElement = document.querySelector('.ad-form__slider');
-
 noUiSlider.create(sliderElement, {
   range: {
     min: 0,
@@ -68,7 +72,7 @@ noUiSlider.create(sliderElement, {
 });
 
 sliderElement.noUiSlider.on('update', () => {
-  priceRoom.value = sliderElement.noUiSlider.get();
+  priceRoom.placeholder = sliderElement.noUiSlider.get();
 });
 
 function onUnitChange () {
@@ -84,8 +88,6 @@ function getErrorMessagePrice () {
 pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
 typeRoom.addEventListener('change', onUnitChange);
 
-const numberRooms = formAd.querySelector('[name="rooms"]');
-const numberSeats = formAd.querySelector('[name="capacity"]');
 
 const numberGuests = {
   '1 комната': ['для 1 гостя'],
@@ -110,9 +112,6 @@ function getErrorMessageNumberRooms () {
 
 pristine.addValidator(numberRooms, validateNumberGuests, getErrorMessageNumberRooms);
 pristine.addValidator(numberSeats, validateNumberGuests, getErrorMessageNumberRooms);
-
-const timeIn = formAd.querySelector('#timein');
-const timeOut = formAd.querySelector('#timeout');
 
 timeIn.addEventListener('change', (evt) => {
   const nowSelected = evt.target.selectedIndex;

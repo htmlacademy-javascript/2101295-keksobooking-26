@@ -105,7 +105,6 @@ export const listCard = (point) => {
     discriptionPopup.remove();
   }
 
-
   if (point.offer.photos) {
     photoPopup.innerHTML = '';
     photoPopup.appendChild(createOfferPhotos(point.offer.photos));
