@@ -1,7 +1,8 @@
 import {createMarker, markerGroup} from './map.js';
 import {offers} from './main.js';
 import {debounce} from './util.js';
-//let offers = [];
+
+
 const defaultValue = 'any';
 const filterTypeElement = document.querySelector('#housing-type');
 const filterPriceElement = document.querySelector('#housing-price');
