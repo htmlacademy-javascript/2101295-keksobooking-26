@@ -8,16 +8,7 @@ export const typeOfHouse = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-const createOfferFeatures = (features) => {
-  const featuresItemsFragment = document.createDocumentFragment();
-  features.forEach((feature) => {
-    const featureItem = document.createElement('li');
-    featureItem.classList.add('popup__feature');
-    featureItem.classList.add(`popup__feature--${feature}`);
-    featuresItemsFragment.appendChild(featureItem);
-  });
-  return featuresItemsFragment;
-};
+
 
 const OFFER_PHOTO = { width: 45, height: 40 };
 
@@ -91,6 +82,16 @@ export const listCard = (point) => {
     timePopup.remove();
   }
 
+  const createOfferFeatures = (features) => {
+    const featuresItemsFragment = document.createDocumentFragment();
+    features.forEach((feature) => {
+      const featureItem = document.createElement('li');
+      featureItem.classList.add('popup__feature');
+      featureItem.classList.add(`popup__feature--${feature}`);
+      featuresItemsFragment.appendChild(featureItem);
+    });
+    return featuresItemsFragment;
+  };
 
   if (point.offer.features) {
     feauteresPopup.innerHTML = '';
