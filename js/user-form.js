@@ -4,7 +4,6 @@ import {sendData} from './api.js';
 import {updateMarkers} from './filter.js';
 
 const DEFAULT_AVATAR = 'img/muffin-grey.svg';
-
 const formAd = document.querySelector('.ad-form');
 const filterForm = document.querySelector('.map__filters');
 const photoPreview = document.querySelector('.ad-form__photo');
@@ -14,7 +13,11 @@ const numberRooms = formAd.querySelector('[name="rooms"]');
 const numberSeats = formAd.querySelector('[name="capacity"]');
 const timeIn = formAd.querySelector('#timein');
 const timeOut = formAd.querySelector('#timeout');
+const priceRoom = formAd.querySelector('#price');
+const typeRoom = formAd.querySelector('#type');
 
+
+//валидация заголовка
 
 const pristine = new Pristine(formAd, {
   classTo: 'ad-form__element',
@@ -24,6 +27,7 @@ const pristine = new Pristine(formAd, {
   errorTextTag: 'span',
   errorTextClass: 'form__error'
 }, );
+
 
 function validateHead(value) {
   return value.length >= 30 && value.length <= 100;
@@ -35,17 +39,17 @@ pristine.addValidator(
   'От 30 до 100 символов'
 );
 
-const priceRoom = formAd.querySelector('#price');
-const typeRoom = formAd.querySelector('#type');
+//валидация цены
 
 const minPrice = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000
 };
 
+// слайдер и min значение цены
 function validatPrice(value) {
   return parseInt(value, 10) >= parseInt(priceRoom.min, 10);
 }
@@ -56,7 +60,7 @@ noUiSlider.create(sliderElement, {
     max: 100000,
   },
   start: 1000,
-  step: 1,
+  step: 10,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -71,8 +75,9 @@ noUiSlider.create(sliderElement, {
   },
 });
 
+priceRoom.min = 1000;
 sliderElement.noUiSlider.on('update', () => {
-  priceRoom.placeholder = sliderElement.noUiSlider.get();
+  priceRoom.value = sliderElement.noUiSlider.get();
 });
 
 function onUnitChange () {
@@ -86,6 +91,7 @@ function getErrorMessagePrice () {
 }
 
 pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
+
 typeRoom.addEventListener('change', onUnitChange);
 
 

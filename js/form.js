@@ -9,7 +9,6 @@ const setDisabledState = () => {
   FIELDSETS.disabled = true;
   MAPFILTERSSELECT.disabled = true;
 };
-
 setDisabledState();
 
 export const setActiveState = () => {
