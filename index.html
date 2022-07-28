@@ -8,10 +8,6 @@
   <link rel="stylesheet" href="leaflet/leaflet.css">
   <link rel="stylesheet" href="nouislider/nouislider.css">
   <title>Кексобукинг</title>
-  <script defer src="leaflet/leaflet.js"></script>
-  <script defer src="nouislider/nouislider.js"></script>
-
-
 </head>
 <body>
 
@@ -28,7 +24,7 @@
       <div class="map__canvas" id="map-canvas"></div>
 
       <!-- Фильтрация объявлений -->
-      <div class="map__filters-container">
+      <div class="map__filters-Element">
         <form action="https://26.javascript.pages.academy/keksobooking" mathod="POST" class="map__filters" autocomplete="off">
           <select name="housing-type" id="housing-type" class="map__filter">
             <option value="any" selected>Любой тип жилья</option>
@@ -97,7 +93,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text">
+          <input id="address" name="address" type="text" readonly>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -166,7 +162,7 @@
         </fieldset>
         <fieldset cla ss="ad-form__element ad-form__element--wide">
           <label class="ad-form__label">Фотография жилья</label>
-          <div class="ad-form__photo-container">
+          <div class="ad-form__photo-Element">
             <div class="ad-form__upload">
               <input type="file" id="images" name="images" class="ad-form__input visually-hidden">
               <label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label>
@@ -182,7 +178,7 @@
     </section>
   </main>
 
-  <footer class="footer container">
+  <footer class="footer Element">
     <div class="footer__copyright copyright">
       <a class="copyright__link copyright__link--image" href="https://htmlacademy.ru/intensive/javascript">
         <img src="img/htmla-logo.svg" width="130" height="45" alt="HTML Academy" class="copyright__logo">
@@ -235,8 +231,9 @@
     </div>
   </template>
 
-  <script src="pristine/pristine.min.js"></script>
-  <script src="/js/main.js" type="module"></script>
-
+  <script src="leaflet/leaflet.js"></script>
+  <script src="pristine/pristine.min.js" type="text/javascript"></script>
+  <script src="nouislider/nouislider.js"></script>
+  <script src="js/main.js" type="module"></script>
 </body>
 </html>

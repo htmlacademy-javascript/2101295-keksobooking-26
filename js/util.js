@@ -1,32 +1,32 @@
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showAlert = () => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '1000';
-  alertContainer.style.width = '500px';
-  alertContainer.style.height = '100px';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '500px';
-  alertContainer.style.top = '280px';
-  alertContainer.style.right = '0';
-  alertContainer.style.padding = '10px 3px';
-  alertContainer.style.fontSize = '30px';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'red';
+  const alertElement = document.createElement('div');
+  alertElement.style.zIndex = '1000';
+  alertElement.style.width = '500px';
+  alertElement.style.height = '100px';
+  alertElement.style.position = 'absolute';
+  alertElement.style.left = '500px';
+  alertElement.style.top = '280px';
+  alertElement.style.right = '0';
+  alertElement.style.padding = '10px 3px';
+  alertElement.style.fontSize = '30px';
+  alertElement.style.textAlign = 'center';
+  alertElement.style.backgroundColor = 'red';
 
-  alertContainer.textContent = 'Не загрузились объявления. Перезагрузите страницу.';
+  alertElement.textContent = 'Не загрузились объявления. Перезагрузите страницу.';
 
-  document.body.append(alertContainer);
+  document.body.append(alertElement);
 };
 
-function debounce (callback, timeoutDelay = 500) {
+const debounce = (callback, timeoutDelay = 500) => {
   let timeoutId;
 
   return (...rest) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
-}
+};
 
 export {showAlert, isEscapeKey, debounce};
 

@@ -1,14 +1,18 @@
 import {setActiveState} from './form.js';
 import {listCard} from './popup.js';
 
+
+const TOKYO_COORDINATES =  {
+  lat: 35.658581,
+  lng: 139.745438,
+};
+
+const addressElement = document.querySelector('#address');
 const map = L.map('map-canvas')
   .on('load', () => {
     setActiveState();
   })
-  .setView({
-    lat: 35.658581,
-    lng: 139.745438,
-  }, 12);
+  .setView(TOKYO_COORDINATES, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -23,27 +27,29 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const ADRESS = document.querySelector('#address');
 
-const mainPinMarker = L.marker(
-  {
-    lat: 35.658581,
-    lng: 139.745438,
-  },
+const mainMarker = L.marker(
+  TOKYO_COORDINATES,
   {
     draggable: true,
     icon: mainPinIcon,
   },
 ).addTo(map);
 
+const resetMainMarker = () => { mainMarker.setLatLng(TOKYO_COORDINATES);
+};
 
-ADRESS.value = `${mainPinMarker._latlng.lat.toFixed(5)}, ${mainPinMarker._latlng.lng.toFixed(5)}`;
+addressElement.value = `${mainMarker._latlng.lat.toFixed(5)}, ${mainMarker._latlng.lng.toFixed(5)}`;
 
 
-mainPinMarker.on('moveend', (evt) => {
+mainMarker.on('moveend', (evt) => {
   const targetCoords = evt.target.getLatLng();
-  ADRESS.value = `${targetCoords.lat.toFixed(5)}, ${targetCoords.lng.toFixed(5)}`;
+  addressElement.value = `${targetCoords.lat.toFixed(5)}, ${targetCoords.lng.toFixed(5)}`;
 });
+
+const resetAddress = () => {
+  addressElement.value = `${mainMarker._latlng.lat.toFixed(5)}, ${mainMarker._latlng.lng.toFixed(5)}`;
+};
 
 const icon = L.icon({
   iconUrl: './img/pin.svg',
@@ -53,6 +59,7 @@ const icon = L.icon({
 
 
 const markerGroup = L.layerGroup().addTo(map);
+const clearLayersOnMap = () => markerGroup.clearLayers();
 
 export const createMarker = (ads) => {
   ads.forEach((ad) => {L.marker({
@@ -66,5 +73,4 @@ export const createMarker = (ads) => {
   });
 };
 
-
-export {ADRESS ,map,mainPinMarker, markerGroup};
+export {clearLayersOnMap, resetMainMarker, resetAddress};

@@ -1,45 +1,41 @@
-import {ADRESS, mainPinMarker, map} from './map.js';
+import {resetMainMarker, resetAddress, clearLayersOnMap} from './map.js';
 import {isEscapeKey} from './util.js';
 import {sendData} from './api.js';
 import {updateMarkers} from './filter.js';
 
 const DEFAULT_AVATAR = 'img/muffin-grey.svg';
-const formAd = document.querySelector('.ad-form');
-const filterForm = document.querySelector('.map__filters');
-const photoPreview = document.querySelector('.ad-form__photo');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
+const formAdElement = document.querySelector('.ad-form');
+const filterFormElement = document.querySelector('.map__filters');
+const photoPreviewElement = document.querySelector('.ad-form__photo');
+const avatarPreviewElement = document.querySelector('.ad-form-header__preview img');
 const sliderElement = document.querySelector('.ad-form__slider');
-const numberRooms = formAd.querySelector('[name="rooms"]');
-const numberSeats = formAd.querySelector('[name="capacity"]');
-const timeIn = formAd.querySelector('#timein');
-const timeOut = formAd.querySelector('#timeout');
-const priceRoom = formAd.querySelector('#price');
-const typeRoom = formAd.querySelector('#type');
-
+const numberRoomsElement = formAdElement.querySelector('[name="rooms"]');
+const numberSeatsElement = formAdElement.querySelector('[name="capacity"]');
+const timeInElement = formAdElement.querySelector('#timein');
+const timeOutElement = formAdElement.querySelector('#timeout');
+const priceRoomElement = formAdElement.querySelector('#price');
+const typeRoomElement = formAdElement.querySelector('#type');
+const submitButtonElement = formAdElement.querySelector('.ad-form__submit');
 
 //валидация заголовка
 
-const pristine = new Pristine(formAd, {
+const pristine = new Pristine(formAdElement, {
   classTo: 'ad-form__element',
-  errorClass: 'form__item--invalid',
-  successClass: 'form__item--valid',
   errorTextParent: 'ad-form__element',
-  errorTextTag: 'span',
-  errorTextClass: 'form__error'
-}, );
+  errorTextTag: 'div',
+  errorTextClass: 'ad-form__element--error',
+}, true);
 
 
-function validateHead(value) {
-  return value.length >= 30 && value.length <= 100;
-}
+const validateHead = (value) => value.length >= 30 && value.length <= 100;
 
 pristine.addValidator(
-  formAd.querySelector('#title'),
+  formAdElement.querySelector('#title'),
   validateHead,
   'От 30 до 100 символов'
 );
 
-//валидация цены
+//валидация цены создание слайдера
 
 const minPrice = {
   'bungalow': 0,
@@ -49,10 +45,8 @@ const minPrice = {
   'palace': 10000
 };
 
-// слайдер и min значение цены
-function validatPrice(value) {
-  return parseInt(value, 10) >= parseInt(priceRoom.min, 10);
-}
+const validatPrice = (value) => parseInt(value, 10) >= parseInt(priceRoomElement.min, 10);
+
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -63,38 +57,31 @@ noUiSlider.create(sliderElement, {
   step: 10,
   connect: 'lower',
   format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
+    to: (value) => value.toFixed(Number.isInteger(value) ? 0 : 1),
+    from: (value) => parseFloat(value),
   },
 });
 
-priceRoom.min = 1000;
+const onUnitChange = () => {
+  priceRoomElement.min = minPrice[typeRoomElement.value];
+  priceRoomElement.placeholder = minPrice[typeRoomElement.value];
+  sliderElement.noUiSlider.set(minPrice[typeRoomElement.value]);
+};
+
+priceRoomElement.min = 1000;
 sliderElement.noUiSlider.on('update', () => {
-  priceRoom.value = sliderElement.noUiSlider.get();
+  priceRoomElement.value = sliderElement.noUiSlider.get();
+  pristine.validate(priceRoomElement);
 });
 
-function onUnitChange () {
-  priceRoom.min = minPrice[typeRoom.value];
-  priceRoom.placeholder = minPrice[typeRoom.value];
-  sliderElement.noUiSlider.set(minPrice[typeRoom.value]);
-}
-
-function getErrorMessagePrice () {
-  return `значение должно быть больше ${priceRoom.min} `;
-}
-
-pristine.addValidator(priceRoom, validatPrice, getErrorMessagePrice);
-
-typeRoom.addEventListener('change', onUnitChange);
+const getErrorMessagePrice = () => `значение должно быть больше ${priceRoomElement.min} `;
 
 
+pristine.addValidator(priceRoomElement, validatPrice, getErrorMessagePrice);
+
+typeRoomElement.addEventListener('change', onUnitChange);
+
+//валидация
 const numberGuests = {
   '1 комната': ['для 1 гостя'],
   '2 комнаты': ['для 2 гостей', 'для 1 гостя'],
@@ -103,109 +90,117 @@ const numberGuests = {
 };
 
 
-function validateNumberGuests() {
-  return numberGuests[numberRooms.options[numberRooms.selectedIndex].text].includes(numberSeats.options[numberSeats.selectedIndex].text);
-}
+const validateNumberGuests = () => numberGuests[numberRoomsElement.options[numberRoomsElement.selectedIndex].text].includes(numberSeatsElement.options[numberSeatsElement.selectedIndex].text);
 
-function getErrorMessageNumberRooms () {
-  const numberRoomsNow = numberRooms.options[numberRooms.selectedIndex].text;
+const getErrorMessageNumberRooms = () => {
+  const numberRoomsNow = numberRoomsElement.options[numberRoomsElement.selectedIndex].text;
   return `
          ${numberRoomsNow}
          ${numberRoomsNow === '1 комната' ? 'не подходит' : 'не подходят'}
-         ${numberSeats.options[numberSeats.selectedIndex].text.toLowerCase()}
+         ${numberSeatsElement.options[numberSeatsElement.selectedIndex].text.toLowerCase()}
   `;
+};
+
+pristine.addValidator(numberSeatsElement, validateNumberGuests, getErrorMessageNumberRooms);
+
+function onUnitChangeRoom () {
+  pristine.validate(numberSeatsElement);
 }
+numberRoomsElement.addEventListener('change', onUnitChangeRoom);
+numberSeatsElement.addEventListener('change', onUnitChangeRoom);
 
-pristine.addValidator(numberRooms, validateNumberGuests, getErrorMessageNumberRooms);
-pristine.addValidator(numberSeats, validateNumberGuests, getErrorMessageNumberRooms);
-
-timeIn.addEventListener('change', (evt) => {
+timeInElement.addEventListener('change', (evt) => {
   const nowSelected = evt.target.selectedIndex;
-  timeOut.selectedIndex = nowSelected;
+  timeOutElement.selectedIndex = nowSelected;
 });
 
-timeOut.addEventListener('change', (evt) => {
+timeOutElement.addEventListener('change', (evt) => {
   const nowSelected = evt.target.selectedIndex;
-  timeIn.selectedIndex = nowSelected;
+  timeInElement.selectedIndex = nowSelected;
 });
 
 const cleanInput = () => {
-  formAd.reset();
-  map.closePopup();
-  filterForm.reset();
-  priceRoom.value = '1000';
+  formAdElement.reset();
+  clearLayersOnMap();
+  filterFormElement.reset();
   document.querySelectorAll('.features__checkbox').forEach((el) => {el.checked = false;});
-  mainPinMarker.setLatLng({
-    lat: 35.658581,
-    lng: 139.745438,
-  });
-  map.flyTo({
-    lat: 35.658581,
-    lng: 139.745438,
-  }, 12);
-  ADRESS.value = `${mainPinMarker._latlng.lat.toFixed(5)}, ${mainPinMarker._latlng.lng.toFixed(5)}`;
+  resetMainMarker();
+  resetAddress();
+  priceRoomElement.min = 1000;
   document.querySelector('#description').value = '';
   updateMarkers();
-  photoPreview.innerHTML = '';
-  avatarPreview.src = DEFAULT_AVATAR;
+  photoPreviewElement.innerHTML = '';
+  avatarPreviewElement.src = DEFAULT_AVATAR;
+  sliderElement.noUiSlider.set(1000);
 };
 
 const openOrClose = (massage) => {
-  const body = document.querySelector('body');
+  const bodyDocument = document.querySelector('body');
   const onMessageEscKey = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      closeMessage();
+      onDocumentCkick();
     }
   };
 
-  function openMessage() {
-    body.appendChild(massage);
+  const openMessage = () => {
+    bodyDocument.appendChild(massage);
     document.addEventListener('keydown', onMessageEscKey);
-    document.addEventListener('click', closeMessage);
-  }
+    document.addEventListener('click', onDocumentCkick);
+  };
 
-  function closeMessage() {
-    body.removeChild(massage);
+  function onDocumentCkick() {
+    bodyDocument.removeChild(massage);
     document.removeEventListener('keydown', onMessageEscKey);
-    document.removeEventListener('click', closeMessage);
+    document.removeEventListener('click', onDocumentCkick);
   }
   openMessage();
 };
 
-const alertSuccsessMessage = () => {
+const showSuccsessMessage = () => {
   const templateSuccsess = document.querySelector('#success');
-  const successMessage = templateSuccsess.content.querySelector('.success').cloneNode(true);
-  openOrClose(successMessage);
+  const successMessageTemplate = templateSuccsess.content.querySelector('.success').cloneNode(true);
+  openOrClose(successMessageTemplate);
 };
 
-const alertErrorMessage = () => {
+const showErrorMessage = () => {
   const templateError = document.querySelector('#error');
-  const errorMessage = templateError.content.querySelector('.error').cloneNode(true);
-  openOrClose(errorMessage);
+  const errorMessageTemplate = templateError.content.querySelector('.error').cloneNode(true);
+  openOrClose(errorMessageTemplate);
 };
 
 const onSuccess = () => {
   cleanInput();
-  alertSuccsessMessage();};
+  showSuccsessMessage();
+};
 
+const blockSubmitButton = () => {
+  submitButtonElement.setAttribute('disabled', 'disabled');
+  submitButtonElement.textContent = 'Сохраняю...';
+};
 
-function setUserFormSubmit() {
-  formAd.addEventListener('submit', (evt) => {
+const unblockSubmitButton = () => {
+  submitButtonElement.removeAttribute('disabled');
+  submitButtonElement.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = () => {
+  formAdElement.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      sendData(onSuccess, alertErrorMessage, new FormData(evt.target));
+      blockSubmitButton();
+      sendData(onSuccess, showErrorMessage, new FormData(evt.target));
+      unblockSubmitButton();
     }
   });
-}
+};
 
-setUserFormSubmit();
 
-const resetKey = document.querySelector('.ad-form__reset');
-resetKey.addEventListener('click', (evt) => {
+const resetKeyElement = document.querySelector('.ad-form__reset');
+resetKeyElement.addEventListener('click', (evt) => {
   evt.preventDefault();
   cleanInput();
 });
 
-export {cleanInput, formAd};
+export {cleanInput, setUserFormSubmit};
