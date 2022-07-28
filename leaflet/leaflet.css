@@ -4,7 +4,7 @@
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow,
-.leaflet-tile-container,
+.leaflet-tile-Element,
 .leaflet-pane > svg,
 .leaflet-pane > canvas,
 .leaflet-zoom-box,
@@ -14,7 +14,7 @@
 	left: 0;
 	top: 0;
 	}
-.leaflet-container {
+.leaflet-Element {
 	overflow: hidden;
 	}
 .leaflet-tile,
@@ -34,7 +34,7 @@
 	image-rendering: -webkit-optimize-contrast;
 	}
 /* hack that prevents hw layers "stretching" when loading new tiles */
-.leaflet-safari .leaflet-tile-container {
+.leaflet-safari .leaflet-tile-Element {
 	width: 1600px;
 	height: 1600px;
 	-webkit-transform-origin: 0 0;
@@ -43,36 +43,36 @@
 .leaflet-marker-shadow {
 	display: block;
 	}
-/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
-/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
-.leaflet-container .leaflet-overlay-pane svg,
-.leaflet-container .leaflet-marker-pane img,
-.leaflet-container .leaflet-shadow-pane img,
-.leaflet-container .leaflet-tile-pane img,
-.leaflet-container img.leaflet-image-layer,
-.leaflet-container .leaflet-tile {
+/* .leaflet-Element svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-Element img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-Element .leaflet-overlay-pane svg,
+.leaflet-Element .leaflet-marker-pane img,
+.leaflet-Element .leaflet-shadow-pane img,
+.leaflet-Element .leaflet-tile-pane img,
+.leaflet-Element img.leaflet-image-layer,
+.leaflet-Element .leaflet-tile {
 	max-width: none !important;
 	max-height: none !important;
 	}
 
-.leaflet-container.leaflet-touch-zoom {
+.leaflet-Element.leaflet-touch-zoom {
 	-ms-touch-action: pan-x pan-y;
 	touch-action: pan-x pan-y;
 	}
-.leaflet-container.leaflet-touch-drag {
+.leaflet-Element.leaflet-touch-drag {
 	-ms-touch-action: pinch-zoom;
 	/* Fallback for FF which doesn't support pinch-zoom */
 	touch-action: none;
 	touch-action: pinch-zoom;
 }
-.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+.leaflet-Element.leaflet-touch-drag.leaflet-touch-zoom {
 	-ms-touch-action: none;
 	touch-action: none;
 }
-.leaflet-container {
+.leaflet-Element {
 	-webkit-tap-highlight-color: transparent;
 }
-.leaflet-container a {
+.leaflet-Element a {
 	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
 }
 .leaflet-tile {
@@ -235,7 +235,7 @@
 .leaflet-marker-shadow,
 .leaflet-image-layer,
 .leaflet-pane > svg path,
-.leaflet-tile-container {
+.leaflet-tile-Element {
 	pointer-events: none;
 	}
 
@@ -249,14 +249,14 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* visual tweaks */
 
-.leaflet-container {
+.leaflet-Element {
 	background: #ddd;
 	outline: 0;
 	}
-.leaflet-container a {
+.leaflet-Element a {
 	color: #0078A8;
 	}
-.leaflet-container a.leaflet-active {
+.leaflet-Element a.leaflet-active {
 	outline: 2px solid orange;
 	}
 .leaflet-zoom-box {
@@ -266,7 +266,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 
 /* general typography */
-.leaflet-container {
+.leaflet-Element {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 
@@ -400,7 +400,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 
 /* attribution and scale controls */
 
-.leaflet-container .leaflet-control-attribution {
+.leaflet-Element .leaflet-control-attribution {
 	background: #fff;
 	background: rgba(255, 255, 255, 0.7);
 	margin: 0;
@@ -416,8 +416,8 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-control-attribution a:hover {
 	text-decoration: underline;
 	}
-.leaflet-container .leaflet-control-attribution,
-.leaflet-container .leaflet-control-scale {
+.leaflet-Element .leaflet-control-attribution,
+.leaflet-Element .leaflet-control-scale {
 	font-size: 11px;
 	}
 .leaflet-left .leaflet-control-scale {
@@ -480,7 +480,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .leaflet-popup-content p {
 	margin: 18px 0;
 	}
-.leaflet-popup-tip-container {
+.leaflet-popup-tip-Element {
 	width: 40px;
 	height: 20px;
 	position: absolute;
@@ -507,7 +507,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	color: #333;
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 	}
-.leaflet-container a.leaflet-popup-close-button {
+.leaflet-Element a.leaflet-popup-close-button {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -522,7 +522,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	font-weight: bold;
 	background: transparent;
 	}
-.leaflet-container a.leaflet-popup-close-button:hover {
+.leaflet-Element a.leaflet-popup-close-button:hover {
 	color: #999;
 	}
 .leaflet-popup-scrolled {
@@ -541,7 +541,7 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
 	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
 	}
-.leaflet-oldie .leaflet-popup-tip-container {
+.leaflet-oldie .leaflet-popup-tip-Element {
 	margin-top: -1px;
 	}
 

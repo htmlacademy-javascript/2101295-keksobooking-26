@@ -1,13 +1,13 @@
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
-const avatarChooser = document.querySelector('.ad-form__field input[type=file]');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
-const photoContainer = document.querySelector('.ad-form__photo-container');
-const photoChooser = photoContainer.querySelector('.ad-form__upload input[type=file]');
-let photoPreview = photoContainer.querySelector('.ad-form__photo');
+const avatarChooserElement = document.querySelector('.ad-form__field input[type=file]');
+const avatarPreviewElement = document.querySelector('.ad-form-header__preview img');
+const photoElementElement = document.querySelector('.ad-form__photo-Element');
+const photoChooserElement = photoElementElement.querySelector('.ad-form__upload input[type=file]');
+let photoPreviewElement = photoElementElement.querySelector('.ad-form__photo');
 
 
-const downloadfile = function (chooser, preview) {
+const uploadFile = (chooser, preview) => {
   const file = chooser.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
@@ -17,23 +17,23 @@ const downloadfile = function (chooser, preview) {
   }
 };
 
-avatarChooser.addEventListener('change', () => {
-  downloadfile(avatarChooser, avatarPreview);
+avatarChooserElement.addEventListener('change', () => {
+  uploadFile(avatarChooserElement, avatarPreviewElement);
 });
 
-photoChooser.addEventListener('change', () => {
+photoChooserElement.addEventListener('change', () => {
   let imgPreview;
-  if (!photoPreview.firstChild) {
+  if (!photoPreviewElement.firstChild) {
     const img = document.createElement('img');
     img.style.width = '100%';
-    photoPreview.style.display = 'flex';
-    photoPreview.style.alignItems = 'center';
-    photoPreview.style.justifyContent = 'center';
-    imgPreview = photoPreview.appendChild(img);
+    photoPreviewElement.style.display = 'flex';
+    photoPreviewElement.style.alignItems = 'center';
+    photoPreviewElement.style.justifyContent = 'center';
+    imgPreview = photoPreviewElement.appendChild(img);
   } else {
-    photoPreview = photoPreview.cloneNode(true);
-    photoContainer.appendChild(photoPreview);
-    imgPreview = photoPreview.firstChild;
+    photoPreviewElement = photoPreviewElement.cloneNode(true);
+    photoElementElement.appendChild(photoPreviewElement);
+    imgPreview = photoPreviewElement.firstChild;
   }
-  downloadfile(photoChooser, imgPreview);
+  uploadFile(photoChooserElement, imgPreview);
 });

@@ -1,3 +1,5 @@
+const OFFER_PHOTO = { width: 45, height: 40 };
+
 const adCardTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 // объект для сопоставления типов жилья
@@ -8,9 +10,6 @@ export const typeOfHouse = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-
-
-const OFFER_PHOTO = { width: 45, height: 40 };
 
 const createOfferPhotos = (photos) => {
   const offerPhotosFragment = document.createDocumentFragment();
@@ -27,59 +26,59 @@ const createOfferPhotos = (photos) => {
 };
 
 
-export const listCard = (point) => {
-  const similarCard = adCardTemplate.cloneNode(true);
-  const avatarPopup = similarCard.querySelector('.popup__avatar');
-  const titlePopup = similarCard.querySelector('.popup__title');
-  const addressPopup = similarCard.querySelector('.popup__text--address');
-  const pricePopup = similarCard.querySelector('.popup__text--price');
-  const typeOffer = similarCard.querySelector('.popup__type');
-  const capacityPopup = similarCard.querySelector('.popup__text--capacity');
-  const timePopup = similarCard.querySelector('.popup__text--time');
-  const feauteresPopup = similarCard.querySelector('.popup__features');
-  const discriptionPopup = similarCard.querySelector('.popup__description');
-  const photoPopup = similarCard.querySelector('.popup__photos');
+const listCard = (point) => {
+  const similarCardTemplate = adCardTemplate.cloneNode(true);
+  const avatarPopupTemplate = similarCardTemplate.querySelector('.popup__avatar');
+  const titlePopupTemplate = similarCardTemplate.querySelector('.popup__title');
+  const addressPopupTemplate = similarCardTemplate.querySelector('.popup__text--address');
+  const pricePopupTemplate = similarCardTemplate.querySelector('.popup__text--price');
+  const typeOfferTemplate = similarCardTemplate.querySelector('.popup__type');
+  const capacityPopupTemplate = similarCardTemplate.querySelector('.popup__text--capacity');
+  const timePopupTemplate = similarCardTemplate.querySelector('.popup__text--time');
+  const featuresPopupTemplate = similarCardTemplate.querySelector('.popup__features');
+  const descriptionPopupTemplate = similarCardTemplate.querySelector('.popup__description');
+  const photoPopupTemplate = similarCardTemplate.querySelector('.popup__photos');
 
   if (point.author.avatar) {
-    avatarPopup.src = point.author.avatar;
+    avatarPopupTemplate.src = point.author.avatar;
   } else {
-    avatarPopup.remove();
+    avatarPopupTemplate.remove();
   }
 
   if (point.offer.title) {
-    titlePopup.textContent = point.offer.title;
+    titlePopupTemplate.textContent = point.offer.title;
   } else {
-    titlePopup.remove();
+    titlePopupTemplate.remove();
   }
 
   if (point.offer.address) {
-    addressPopup.textContent = point.offer.address;
+    addressPopupTemplate.textContent = point.offer.address;
   } else {
-    addressPopup.remove();
+    addressPopupTemplate.remove();
   }
 
   if (point.offer.price) {
-    pricePopup.textContent = `${point.offer.price} ₽/ночь`;
+    pricePopupTemplate.textContent = `${point.offer.price} ₽/ночь`;
   } else {
-    pricePopup.remove();
+    pricePopupTemplate.remove();
   }
 
   if (point.offer.type) {
-    typeOffer.textContent = typeOfHouse[point.offer.type];
+    typeOfferTemplate.textContent = typeOfHouse[point.offer.type];
   } else {
-    typeOffer.remove();
+    typeOfferTemplate.remove();
   }
 
   if (point.offer.rooms && point.offer.guests) {
-    capacityPopup.textContent = `${point.offer.rooms} комнаты для ${point.offer.guests} гостей`;
+    capacityPopupTemplate.textContent = `${point.offer.rooms} комнаты для ${point.offer.guests} гостей`;
   } else {
-    capacityPopup.remove();
+    capacityPopupTemplate.remove();
   }
 
   if (point.offer.checkin && point.offer.checkout) {
-    timePopup.textContent = `Заезд после ${point.offer.checkin}, выезд до ${point.offer.checkout}`;
+    timePopupTemplate.textContent = `Заезд после ${point.offer.checkin}, выезд до ${point.offer.checkout}`;
   } else {
-    timePopup.remove();
+    timePopupTemplate.remove();
   }
 
   const createOfferFeatures = (features) => {
@@ -94,26 +93,26 @@ export const listCard = (point) => {
   };
 
   if (point.offer.features) {
-    feauteresPopup.innerHTML = '';
-    feauteresPopup.appendChild(createOfferFeatures(point.offer.features));
+    featuresPopupTemplate.innerHTML = '';
+    featuresPopupTemplate.appendChild(createOfferFeatures(point.offer.features));
   } else {
-    feauteresPopup.remove();
+    featuresPopupTemplate.remove();
   }
 
   if (point.offer.description) {
-    discriptionPopup.textContent = point.offer.description;
+    descriptionPopupTemplate.textContent = point.offer.description;
   } else {
-    discriptionPopup.remove();
+    descriptionPopupTemplate.remove();
   }
 
   if (point.offer.photos) {
-    photoPopup.innerHTML = '';
-    photoPopup.appendChild(createOfferPhotos(point.offer.photos));
+    photoPopupTemplate.innerHTML = '';
+    photoPopupTemplate.appendChild(createOfferPhotos(point.offer.photos));
   } else {
-    photoPopup.remove();
+    photoPopupTemplate.remove();
   }
 
-  return similarCard;
+  return similarCardTemplate;
 };
 
-
+export {listCard};

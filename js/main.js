@@ -1,23 +1,10 @@
-import './util.js';
-import './avatar.js';
-import './popup.js';
+
 import './form.js';
-import './user-form.js';
-import './map.js';
-import './api.js';
+import './avatar.js';
 import {getData} from './api.js';
 import {showAlert} from './util.js';
-import {updateMarkers} from './filter.js';
+import {extractingArray} from './filter.js';
+import {setUserFormSubmit} from './user-form.js';
 
-let offersArr = [];
-
-getData((ads) => {
-  offersArr = ads;
-  updateMarkers();
-},
-() => {
-  showAlert();
-});
-
-
-export {offersArr};
+getData(extractingArray, showAlert);
+setUserFormSubmit();

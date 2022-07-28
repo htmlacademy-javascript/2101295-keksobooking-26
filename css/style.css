@@ -94,7 +94,7 @@ fieldset {
  * Фильтры объявления
  */
 
-.map__filters-container {
+.map__filters-Element {
   width: 100%;
   background-color: #000000;
 }
@@ -545,7 +545,7 @@ fieldset {
   padding-top: 10px;
 }
 
-.ad-form__photo-container {
+.ad-form__photo-Element {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1034,4 +1034,13 @@ fieldset {
 
 .hidden {
   display: none;
+}
+
+.ad-form__element--error {
+  width: 320px;
+  height: 25px;
+  font-family: "Roboto", "Arial", sans-serif;
+  position: absolute;
+  color: red;
+  font-size: 90%;
 }

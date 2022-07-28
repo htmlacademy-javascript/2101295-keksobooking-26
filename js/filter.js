@@ -1,5 +1,4 @@
-import {createMarker, markerGroup} from './map.js';
-import {offersArr} from './main.js';
+import {createMarker, clearLayersOnMap} from './map.js';
 import {debounce} from './util.js';
 
 
@@ -14,12 +13,10 @@ const filterPriceElement = document.querySelector('#housing-price');
 const filterRoomElement = document.querySelector('#housing-rooms');
 const filterGuestsElement = document.querySelector('#housing-guests');
 
-const housingType = (ad) => {
-  if (filterTypeElement.value === DEFAULT_VALUE) {return true;}
-  return ad.offer.type === filterTypeElement.value;
-};
 
-const housingPrice = (ad) => {
+const checkTypeHouse = (ad) => filterTypeElement.value === DEFAULT_VALUE || ad.offer.type === filterTypeElement.value;
+
+const checkPriceHouse = (ad) => {
   if (filterPriceElement.value === DEFAULT_VALUE) {return true;}
   if (filterPriceElement.value === MIDDLE_VALUE) {
     return ad.offer.price > LOW_PRICE && ad.offer.price < HIGH_PRICE;
@@ -32,24 +29,17 @@ const housingPrice = (ad) => {
   }
 };
 
-const housingRooms = (ad) => {
-  if (filterRoomElement.value === DEFAULT_VALUE) {return true;}
-  return ad.offer.rooms === Number(filterRoomElement.value);
-};
+const checkRoomsHouse = (ad) => filterRoomElement.value === DEFAULT_VALUE || ad.offer.rooms === Number(filterRoomElement.value);
 
-const housingGuests = (ad) => {
-  if (filterGuestsElement.value === DEFAULT_VALUE) {return true;}
-  return ad.offer.guests === Number(filterGuestsElement.value);
-};
+const checkGuestsHouse = (ad) => filterGuestsElement.value === DEFAULT_VALUE || ad.offer.guests === Number(filterGuestsElement.value);
 
-
-const housingFeatures = (ad) => {
-  const checkboxes = document.getElementsByName('features');
+const checkFeaturesHouse = (ad) => {
+  const allCheckboxesElements = document.querySelectorAll('input[name="features"]');
   const checkboxesChecked = [];
 
-  for (let v=0; v<checkboxes.length; v++) {
-    if (checkboxes[v].checked) {
-      checkboxesChecked.push(checkboxes[v].value);
+  for (const checkbox of allCheckboxesElements) {
+    if (checkbox.checked) {
+      checkboxesChecked.push(checkbox.value);
     }}
 
   const listOfFeatures = ad.offer.features;
@@ -61,24 +51,33 @@ const housingFeatures = (ad) => {
   if (!listOfFeatures) {
     return false;}
 
-  for (let q = 0; q < checkboxesChecked.length; q++) {
-    if (!listOfFeatures.includes(checkboxesChecked[q])){
+  for (const selectedСheckbox of checkboxesChecked) {
+    if (!listOfFeatures.includes(selectedСheckbox)){
       return false;
     }
   }
   return true;
 };
 
-const allFilters = document.querySelector('.map__filters');
+const allFiltersElements = document.querySelector('.map__filters');
 
-const filterOffers = (ads) => housingGuests(ads) && housingRooms(ads) && housingPrice(ads) && housingType(ads) && housingFeatures(ads);
+const filterOffers = (elements) => checkTypeHouse(elements) && checkPriceHouse(elements) && checkRoomsHouse(elements) && checkGuestsHouse(elements) && checkFeaturesHouse(elements);
+
+let offersArr = [];
 
 const updateMarkers = () => {
-  markerGroup.clearLayers();
+  clearLayersOnMap();
   createMarker(offersArr.filter(filterOffers).slice(0, 10));
-  allFilters.addEventListener('change', debounce(() =>
+  allFiltersElements.addEventListener('change', debounce(() =>
     updateMarkers(), 500)
   );
 };
 
-export {updateMarkers};
+
+const extractingArray = (ads) => {
+  offersArr = ads;
+  updateMarkers();
+};
+
+
+export {extractingArray, updateMarkers};
